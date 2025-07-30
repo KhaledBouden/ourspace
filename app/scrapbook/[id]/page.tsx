@@ -1,14 +1,13 @@
-// app/scrapbook/[id]/page.tsx or app/album/[id]/page.tsx
+// app/scrapbook/[id]/page.tsx
 
 import AlbumDetail from './AlbumDetail';
 
-interface AlbumPageProps {
-  params: {
+type Props = {
+  params: Promise<{
     id: string;
-  };
-}
+  }>;
+};
 
-// This function tells Next.js which dynamic routes to pre-render at build time
 export async function generateStaticParams() {
   return [
     { id: '1' },
@@ -20,7 +19,7 @@ export async function generateStaticParams() {
   ];
 }
 
-// The page component
-export default function AlbumPage({ params }: AlbumPageProps) {
-  return <AlbumDetail albumId={params.id} />;
+export default async function AlbumPage({ params }: Props) {
+  const { id } = await params;
+  return <AlbumDetail albumId={id} />;
 }
